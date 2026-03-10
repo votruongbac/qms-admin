@@ -16,6 +16,8 @@ services:
       - DB_PASSWORD=Admin@123
     volumes:
       - ./:/app
+      - /app/vendor
+      - /app/node_modules
       - ./storage:/app/storage
     depends_on:
       - db-mysql
