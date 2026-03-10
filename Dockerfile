@@ -1,5 +1,5 @@
 # Sử dụng FrankenPHP bản Alpine cho nhẹ và tương thích M4
-FROM dunglas/frankenphp:latest-php8.4-alpine
+FROM dunglas/frankenphp:php8.4-alpine
 # 1. Cài đặt các công cụ hệ thống & PHP extensions cần thiết cho Laravel
 RUN install-php-extensions pdo_mysql bcmath gd intl zip opcache
 
