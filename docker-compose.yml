@@ -3,7 +3,7 @@ services:
   # Laravel App (Sử dụng FrankenPHP hoặc PHP-FPM tùy bạn chọn)
   app-laravel:
     build: .
-    container_name: laravel_m4_app
+    container_name: laravel_project2_m4
     restart: always
     ports:
       - "8000:80"
