@@ -95,7 +95,7 @@ const submit = () => {
           
           <div class="bg-white shadow sm:rounded-lg border border-gray-100">
             <div class="p-6 border-b border-gray-100 bg-gray-50/50">
-              <h3 class="text-lg font-medium text-gray-900">Thông tin cơ bản</h3>
+              <h3 class="text-lg font-medium text-gray-900">Thông tin cơ bản..</h3>
             </div>
             <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
