@@ -37,7 +37,7 @@ const showingNavigationDropdown = ref(false);
                                 </NavLink>
                                 
                                 <NavLink href="#" :active="false">
-                                    Quản lý Menu
+                                    Quản lý Menu...
                                 </NavLink>
                             </div>
                         </div>
