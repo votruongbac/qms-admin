@@ -8,6 +8,14 @@ jobs:
   deploy:
     runs-on: self-hosted
     steps: # Đã sửa lề đoạn này
+      - name: Check Disk Space
+        run: |
+          echo "Dung lượng ổ cứng hiện tại:"
+          df -h
+          echo "Dung lượng các thư mục deploy cũ:"
+          du -sh ../deploy-* || true
+          echo "Dung lượng Docker đang chiếm dụng:"
+          docker system df
       - name: System Cleanup
         run: |
           # Xóa các image, container, network và cache thừa không dùng đến
