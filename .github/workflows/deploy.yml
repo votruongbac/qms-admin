@@ -8,27 +8,29 @@ jobs:
   deploy:
     runs-on: self-hosted
     steps:
-      - name: Bypass Cleanup by Renaming
-        run: |
-          # Dừng toàn bộ container để "nhả" folder
-          docker compose down || true
-          
-          # Thay vì xóa (lỗi permission), ta đổi tên nó sang một folder rác
-          # Lệnh mv (move) thường không bị chặn quyền gắt gao như rm
-          TIMESTAMP=$(date +%s)
-          mv node_modules node_modules_old_$TIMESTAMP || true
-          mv vendor vendor_old_$TIMESTAMP || true
-          mv public/build public_build_old_$TIMESTAMP || true
-          
-          # Thông báo để mình biết
-          echo "Đã đổi tên các folder bị khóa để bypass checkout."
-      - name: Checkout code
+      # 1. Tạo một cái tên thư mục dựa trên mã ID của lần chạy này (không bao giờ trùng)
+      - name: Checkout to a fresh directory
         uses: actions/checkout@v4
+        with:
+          path: "fresh-deploy" # Tải code vào thư mục 'fresh-deploy' thay vì thư mục gốc
 
-      - name: Deploy on Mac Mini
+      - name: Deploy from fresh directory
         run: |
+          # Chuyển hẳn vào thư mục mới vừa tải về
+          cd fresh-deploy
+          
+          # Copy file .env (nếu bạn có lưu ở thư mục cha) hoặc tạo mới như nãy mình làm
+          # Ở đây ta giả định tạo mới cho chắc ăn
+          echo "APP_KEY=" > .env
+          echo "DB_CONNECTION=mysql\nDB_HOST=db-mysql\nDB_PORT=3306\nDB_DATABASE=qms_admin\nDB_USERNAME=root\nDB_PASSWORD=Admin@123" >> .env
+          
+          # Dừng container cũ (đang dùng folder bị khóa)
+          docker compose -f ../docker-compose.yml down || true
+          
+          # Chạy Docker Compose mới từ thư mục này
           docker compose up -d --build
-          echo "Đợi MySQL khởi động trong 20 giây..."
-          sleep 20
+          
+          # Các lệnh Artisan như cũ
+          docker exec laravel_project2_m4 php artisan key:generate
+          docker exec laravel_project2_m4 php artisan config:clear
           docker exec laravel_project2_m4 php artisan migrate --force
-          docker exec laravel_project2_m4 php artisan config:cache
