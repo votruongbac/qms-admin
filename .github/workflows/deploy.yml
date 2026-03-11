@@ -7,19 +7,14 @@ on:
 jobs:
   deploy:
     runs-on: self-hosted
-    - name: Docker cleanup (The "No Sudo" Way)
-        run: |
-          # Dùng một container phụ cực nhẹ (Alpine) để xóa node_modules
-          # Chúng ta mount thư mục hiện tại vào container này
-          docker run --rm -v ${{ github.workspace }}:/app alpine sh -c "rm -rf /app/node_modules /app/vendor /app/public/build"
-          
-          # Dừng toàn bộ các container cũ đang chạy để giải phóng file
-          docker compose down || true
+    steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Deploy on Mac Mini
         run: |
+          docker stop laravel_project2_m4 || true
+          docker rm laravel_project2_m4 || true
           docker compose up -d --build
           echo "Đợi MySQL khởi động trong 20 giây..."
           sleep 20
