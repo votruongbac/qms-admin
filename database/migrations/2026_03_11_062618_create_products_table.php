@@ -9,18 +9,19 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
+    
     public function up(): void
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('image_main'); // Hình chính
-            $table->json('images_sub')->nullable(); // Nhiều hình phụ (Mảng)
-            $table->text('description')->nullable(); // Chi tiết
-            $table->json('specs')->nullable(); // Thông số kỹ thuật (Dạng Key-Value)
-            $table->decimal('price', 15, 2);
-            $table->string('category'); // Loại
-            $table->string('document')->nullable(); // Link tài liệu (PDF/Doc)
+            $table->string('name'); // Cột bị báo thiếu
+            $table->decimal('price', 15, 2)->nullable();
+            $table->string('category')->nullable();
+            $table->string('image_main')->nullable();
+            $table->json('images_sub')->nullable(); // Lưu mảng nhiều ảnh
+            $table->json('specs')->nullable();      // Lưu thông số kỹ thuật
+            $table->text('description')->nullable();
+            $table->string('document')->nullable();
             $table->timestamps();
         });
     }
