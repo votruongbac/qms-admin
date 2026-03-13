@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CategoryController;
 use Inertia\Inertia;
 
 Route::get('/', function () {
@@ -17,6 +18,9 @@ Route::get('/', function () {
         'phpVersion' => PHP_VERSION,
     ]);
 });
+
+Route::get('/api-client/products', [ProductController::class, 'indexClient']);
+Route::get('/api-client/products/{id}', [ProductController::class, 'showClient']);
 Route::get('/api-client/settings', [SettingController::class, 'getSettings']);
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
@@ -31,6 +35,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
     Route::post('/settings', [SettingController::class, 'update'])->name('settings.update');
     Route::resource('products', ProductController::class);
+    Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
 });
 
 require __DIR__ . '/auth.php';

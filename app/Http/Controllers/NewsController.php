@@ -56,5 +56,41 @@ class NewsController extends Controller
         'news' => $news
     ]);
 }
+public function edit(News $news)
+{
+    return inertia('News/edit', [
+        'news' => $news
+    ]);
+}
+public function update(Request $request, News $news)
+{
+    // 1. Validate dữ liệu
+    $data = $request->validate([
+        'title'        => 'required|string|max:255',
+        'slug'         => 'required|string|unique:news,slug,' . $news->id,
+        'summary'      => 'nullable|string',
+        'content'      => 'required|string', // Nơi chứa mã HTML từ Tiptap
+        'thumbnail'    => 'nullable|string',
+        'category'     => 'required|string',
+        'is_published' => 'boolean',
+    ]);
+
+    // 2. Cập nhật vào Database
+    $news->update($data);
+
+    // 3. Chuyển hướng về trang danh sách hoặc trang chi tiết với thông báo
+    return redirect()->route('news.index')->with('success', 'Cập nhật bài viết thành công!');
+}
+public function destroy(News $news)
+    {
+        try {
+            $news->delete();
+            return redirect()->back()->with('success', 'Đã xóa bài viết thành công!');
+            
+        } catch (\Exception $e) {
+            // Trả về lỗi nếu có vấn đề xảy ra (ví dụ lỗi ràng buộc dữ liệu)
+            return redirect()->back()->with('error', 'Có lỗi xảy ra, không thể xóa bài viết này.');
+        }
+    }
 
 }

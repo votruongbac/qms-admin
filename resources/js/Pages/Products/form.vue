@@ -21,6 +21,7 @@ const form = useForm({
   description: props.product?.description ?? "",
   specs: props.product?.specs ?? [{ key: "", value: "" }],
   document: props.product?.document ?? "",
+  is_highlight: props.product?.is_highlight ?? 0
 });
 
 /**
@@ -205,7 +206,17 @@ const submit = () => {
                 </div>
             </div>
           </div>
-
+          <div class="flex items-center gap-2 mt-4">
+            <input 
+                type="checkbox" 
+                id="is_highlight" 
+                v-model="form.is_highlight" 
+                class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+            />
+            <label for="is_highlight" class="text-sm font-medium text-gray-700">
+                Hiển thị sản phẩm nổi bật ở trang chủ
+            </label>
+        </div>
           <div class="pt-6 border-t">
             <button type="submit" class="w-full bg-indigo-600 text-white py-4 rounded-xl font-bold text-lg hover:bg-indigo-700 transition shadow-lg shadow-indigo-100 disabled:bg-gray-400" :disabled="form.processing || isUploading">
                 <span v-if="isUploading">Đang tải dữ liệu lên máy chủ...</span>

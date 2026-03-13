@@ -18,6 +18,7 @@ class Product extends Model
         'images_sub',
         'description',
         'specs',
+        'is_highlight',
         'price',
         'category',
         'document'
@@ -28,8 +29,9 @@ class Product extends Model
      * Giúp bạn làm việc với Array trong PHP thay vì phải dùng json_decode/json_encode thủ công.
      */
     protected $casts = [
-        'images_sub' => 'array', // Tự động biến JSON thành Mảng khi gọi $product->images_sub
-        'specs' => 'array',      // Tự động biến JSON thành Mảng
+        'images_sub' => 'json', // Tự động biến JSON thành Mảng khi gọi $product->images_sub
+        'specs' => 'json',      // Tự động biến JSON thành Mảng
         'price' => 'float',      // Đảm bảo giá luôn là kiểu số
+        'is_highlight' => 'boolean',
     ];
 }
